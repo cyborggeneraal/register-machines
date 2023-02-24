@@ -114,9 +114,9 @@ end
 	
 local RM = {}
 
-function RM.new(program: Program)
+function RM.new(program: Program, registers: {number}?)
 	local self = {
-		registers = {},
+		registers = registers or {},
 		program = program,
 	}
 
@@ -134,8 +134,6 @@ function RM.new(program: Program)
 			self.registers[i] = 0
 		end
 	end
-
-	self.wipe()
 	
 	function self.validate()
 		for i=1, math.max(#self.registers, self.maxRegister()) do
