@@ -33,7 +33,7 @@ rm.run(true)
 
 -- A register machine computes a partial function f:ℕ^k ↪ ℕ
 -- iff ∀x ∈ dom(f) ⊆ ℕ^k
--- `rm.registers = {x1,...,xk}; rm.run`
+-- `rm.registers = {x1,...,xk}; rm.run()`
 -- halts and leaves f(x) in the first register
 
 -- RM.compute does this on a given `input: {number}`, and returns the value
