@@ -7,7 +7,7 @@ But you don't prove things like this in lua. Use lean for that.
 These register machines run wild and free with little type constraints.
 Batteries and disk space not included.
 
-```lua
+```
 -- Programs are lists of commands
 
 -- This one empties register 1 into register 2, then halts
