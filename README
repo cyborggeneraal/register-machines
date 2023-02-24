@@ -1,9 +1,3 @@
 # Register Machines
 
-`rm.luau` simulates [register machines](https://webspace.science.uu.nl/~ooste110/syllabi/compthmoeder.pdf) with lua tables.
-
-I think the composition, primitive-recursion, minimisation operations are correct.
-But you don't prove things like this in lua. Use lean for that.
-These register machines run wild and free with little type constraints.
-Batteries and disk space not included.
-
+blah blah test
