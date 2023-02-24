@@ -31,8 +31,7 @@ rm.run(true)
 	1: R1-=>2,3              0,7,7
 --]]
 
--- A register machine computes a partial function f:ℕ^k -> ℕ
--- iff ∀x ∈ dom(f) ⊆ ℕ^k
+-- A register machine computes a partial function f:N^k -> N
 -- `rm.registers = {x1,...,xk}; rm.run`
 -- halts and leaves f(x) in the first register
 
