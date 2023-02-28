@@ -211,6 +211,38 @@ function PR.proj(i: number)
 	end
 end
 
+function PR.composePrograms(p: Program, q: Program) : Program
+
+	local length_p = #p
+	
+	local result = {}
+
+	for _, command in p do
+		local newCommand = table.clone(command)
+		if newCommand.goto > length_p then
+			newCommand.goto = length_p+1
+		end
+		if newCommand.op == "-" then
+			if newCommand.orto > length_p then
+				newCommand.orto = length_p+1
+			end
+		end
+		table.insert(result, newCommand)
+	end
+
+	for _, command in q do
+		local newCommand = table.clone(command)
+		newCommand.goto += length_p
+		if newCommand.op == "-" then
+			newCommand.orto += length_p
+		end
+		table.insert(result, newCommand)
+	end
+
+	return result
+			
+end
+
 function PR.compose(h: Program, ...: Program): Program
 	---------------
 	-- PLAN
@@ -666,9 +698,12 @@ do
 	local min = PR.min
 	local s = PR.succ
 	local z = PR.zero
+	local comp = PR.composePrograms
 	local p1 = PR.proj(1)
 	local p2 = PR.proj(2)
 	local p3 = PR.proj(3)
+
+	local zss = comp(comp(z,s),s)
 	
 	-- Some fun programs
 	local factorial = rec(o(s,z), o(multiply, o(s, p1), p2))
@@ -705,4 +740,5 @@ do
 	test("add", add, {3,4})									--> "add(3,4) = 7"
 	test("mul", mul, {3,4})									--> "mul(3,4) = 12"
 	test("pow", pow, {3,4})									--> "pow(3,4) = 81"
+	test("compose programs", zss, {})						--> "s*s*z = 2"
 end
