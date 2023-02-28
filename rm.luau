@@ -245,7 +245,7 @@ end
 
 function PR.composeMorePrograms(ps: {Program}) : Program
 
-	result = {}
+	local result = {}
 	for _, p in ps do
 		result = PR.composePrograms(result, p)
 	end
@@ -318,26 +318,7 @@ function PR.compose(h: Program, ...: Program): Program
 
 	-- Modify gs to run in order
 	-- This seems sound even if some of the gs are empty programs
-	for _, shiftedG in shiftedGs do
-		local lastEnd = #program
-		local startOfNext = lastEnd + #shiftedG + 1
-		for _, gCommand in shiftedG do
-			local command = table.clone(gCommand)
-			if command.goto > #shiftedG then
-				command.goto = startOfNext
-			else
-				command.goto = lastEnd + command.goto
-			end
-			if command.op == "-" then
-				if command.orto > #shiftedG then
-					command.orto = startOfNext
-				else
-					command.orto = lastEnd + command.orto
-				end
-			end
-			table.insert(program, command)
-		end
-	end
+	program = PR.composePrograms(program, PR.composeMorePrograms(shiftedGs))
 
 	-- Move the result of g_k into Rk
 	for k=1, #shiftedGs do
@@ -347,23 +328,7 @@ function PR.compose(h: Program, ...: Program): Program
 		program[ni+1] = inc(k, ni)
 	end
 
-	local hStart = #program+1
-	for _, hCommand in h do
-		local command = table.clone(hCommand)
-		if command.goto > #h then
-			command.goto = hStart + #h
-		else
-			command.goto = hStart-1 + command.goto
-		end
-		if command.op == "-" then
-			if command.orto > #h then
-				command.orto = hStart + #h
-			else
-				command.orto = hStart-1 + command.orto
-			end
-		end
-		table.insert(program, command)
-	end
+	program = PR.composePrograms(program, h)
 
 	return program
 end
