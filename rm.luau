@@ -243,6 +243,15 @@ function PR.composePrograms(p: Program, q: Program) : Program
 			
 end
 
+function PR.composeMorePrograms(ps: {Program}) : Program
+
+	result = {}
+	for _, p in ps do
+		result = PR.composePrograms(result, p)
+	end
+	return result
+end
+
 function PR.compose(h: Program, ...: Program): Program
 	---------------
 	-- PLAN
@@ -704,6 +713,8 @@ do
 	local p3 = PR.proj(3)
 
 	local zss = comp(comp(z,s),s)
+	local z2 = comp({},s)
+	local zsss = PR.composeMorePrograms({z,s,s,s})
 	
 	-- Some fun programs
 	local factorial = rec(o(s,z), o(multiply, o(s, p1), p2))
@@ -740,5 +751,7 @@ do
 	test("add", add, {3,4})									--> "add(3,4) = 7"
 	test("mul", mul, {3,4})									--> "mul(3,4) = 12"
 	test("pow", pow, {3,4})									--> "pow(3,4) = 81"
+	test("compose programs", z2, {2})						--> "s*s*z = 2"
 	test("compose programs", zss, {})						--> "s*s*z = 2"
+	test("compose programs", zsss, {})						--> "s*s*z = 2"
 end
